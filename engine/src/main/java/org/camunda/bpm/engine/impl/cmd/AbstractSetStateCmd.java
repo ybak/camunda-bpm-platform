@@ -19,14 +19,11 @@ package org.camunda.bpm.engine.impl.cmd;
 import java.util.Date;
 import java.util.concurrent.Callable;
 
-import org.camunda.bpm.engine.impl.history.HistoryLevel;
-import org.camunda.bpm.engine.impl.history.event.HistoryEvent;
-import org.camunda.bpm.engine.impl.history.event.HistoryEventProcessor;
-import org.camunda.bpm.engine.impl.history.event.HistoryEventTypes;
-import org.camunda.bpm.engine.impl.history.producer.HistoryEventProducer;
+import org.camunda.bpm.engine.impl.context.Context;
 import org.camunda.bpm.engine.impl.interceptor.Command;
 import org.camunda.bpm.engine.impl.interceptor.CommandContext;
 import org.camunda.bpm.engine.impl.jobexecutor.JobHandlerConfiguration;
+import org.camunda.bpm.engine.impl.persistence.entity.ProcessDefinitionEntity;
 import org.camunda.bpm.engine.impl.persistence.entity.SuspensionState;
 import org.camunda.bpm.engine.impl.persistence.entity.TimerEntity;
 
@@ -108,9 +105,11 @@ public abstract class AbstractSetStateCmd implements Command<Void> {
     timer.setDuedate(executionDate);
     timer.setJobHandlerType(getDelayedExecutionJobHandlerType());
     timer.setJobHandlerConfigurationRaw(jobHandlerConfiguration.toCanonicalString());
+    timer.setDeploymentId(getDeploymentId(commandContext));
 
     commandContext.getJobManager().schedule(timer);
   }
+
 
   protected String getDelayedExecutionJobHandlerType() {
     return null;
@@ -135,5 +134,16 @@ public abstract class AbstractSetStateCmd implements Command<Void> {
   protected abstract String getLogEntryOperation();
 
   protected abstract SuspensionState getNewSuspensionState();
+
+  protected abstract String getDeploymentId(CommandContext commandContext);
+
+  protected String getDeploymentIdByProcessDefinition(CommandContext commandContext, String processDefinitionId) {
+    ProcessDefinitionEntity definition = Context.getProcessEngineConfiguration().getDeploymentCache()
+        .findDeployedProcessDefinitionById(processDefinitionId);
+    if (definition != null) {
+      return definition.getDeploymentId();
+    }
+    return null;
+  }
 
 }

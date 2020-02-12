@@ -152,4 +152,32 @@ public abstract class AbstractSetJobStateCmd extends AbstractSetStateCmd {
     commandContext.getOperationLogManager().logJobOperation(getLogEntryOperation(), jobId, jobDefinitionId,
       processInstanceId, processDefinitionId, processDefinitionKey, propertyChange);
   }
+
+  @Override
+  protected String getDeploymentId(CommandContext commandContext) {
+    if (jobId != null) {
+      JobManager jobManager = commandContext.getJobManager();
+      JobEntity job = jobManager.findJobById(jobId);
+      if (job != null) {
+        return job.getDeploymentId();
+      }
+    } else if (jobDefinitionId != null) {
+      JobDefinitionManager jobDefinitionManager = commandContext.getJobDefinitionManager();
+      JobDefinitionEntity jobDefinition = jobDefinitionManager.findById(jobDefinitionId);
+      if (jobDefinition != null) {
+        if (jobDefinition.getProcessDefinitionId() != null) {
+          getDeploymentIdByProcessDefinition(commandContext, jobDefinition.getProcessDefinitionId());
+        }
+      }
+    } else if (processInstanceId != null) {
+      return commandContext.getExecutionManager().findExecutionById(processInstanceId).getProcessDefinition().getDeploymentId();
+    } else if (processDefinitionId != null) {
+      return getDeploymentIdByProcessDefinition(commandContext, processDefinitionId);
+    } else if (processDefinitionKey != null) {
+      return commandContext.getProcessDefinitionManager().findLatestDefinitionByKey(processDefinitionKey).getDeploymentId();
+    }
+    return null;
+  }
+
+
 }
