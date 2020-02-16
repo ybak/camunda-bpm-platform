@@ -1,7 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <artifactId>camunda-engine-rest-openapi</artifactId>
-    <name>camunda BPM - engine - REST - OpenAPI</name>
+  <name>camunda BPM - engine - REST - OpenAPI</name>
   <packaging>jar</packaging>
 
   <parent>
@@ -23,6 +25,36 @@
       <scope>test</scope>
       <version>${project.version}</version>
     </dependency>
+
+
+<!--     <dependency> -->
+<!--       <groupId>org.openapitools</groupId> -->
+<!--       <artifactId>openapi-java-client</artifactId> -->
+<!--       <version>${project.version}</version> -->
+<!--       <scope>test</scope> -->
+<!--     </dependency> -->
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.tomakehurst</groupId>
+      <artifactId>wiremock</artifactId>
+      <version>1.58</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+
+
   </dependencies>
 
   <build>
@@ -66,6 +98,53 @@
           </execution>
         </executions>
       </plugin>
+
+      <plugin>
+        <groupId>org.openapitools</groupId>
+        <artifactId>openapi-generator-maven-plugin</artifactId>
+        <version>4.2.3</version>
+        <executions>
+          <execution>
+            <id>generate-java-client</id>
+            <phase>generate-test-resources</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <inputSpec>${generated-directory}/${generated-file}</inputSpec>
+              <output>${project.build.directory}/openapi</output>
+              <generatorName>java</generatorName>
+              <configOptions>
+                <sourceFolder>src/java/main</sourceFolder>
+              </configOptions>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-invoker-plugin</artifactId>
+        <version>3.2.1</version>
+        <configuration>
+          <setupIncludes>
+            <setupInclude>${project.build.directory}/openapi/pom.xml</setupInclude>
+          </setupIncludes>
+          <pomIncludes>
+            <pomInclude>*/pom.xml</pomInclude>
+          </pomIncludes>
+          <pom>${project.build.directory}/openapi/pom.xml</pom>
+        </configuration>
+        <executions>
+          <execution>
+            <id>create-client-jar</id>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <phase>process-test-resources</phase>
+          </execution>
+        </executions>
+      </plugin>
+
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
@@ -86,6 +165,8 @@
           </execution>
         </executions>
       </plugin>
+
     </plugins>
   </build>
+
 </project>
