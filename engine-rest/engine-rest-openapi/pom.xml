@@ -26,34 +26,11 @@
       <version>${project.version}</version>
     </dependency>
 
-
-<!--     <dependency> -->
-<!--       <groupId>org.openapitools</groupId> -->
-<!--       <artifactId>openapi-java-client</artifactId> -->
-<!--       <version>${project.version}</version> -->
-<!--       <scope>test</scope> -->
-<!--     </dependency> -->
-
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-jdk14</artifactId>
+      <scope>provided</scope>
     </dependency>
-
-    <dependency>
-      <groupId>com.github.tomakehurst</groupId>
-      <artifactId>wiremock</artifactId>
-      <version>1.58</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.assertj</groupId>
-      <artifactId>assertj-core</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-
 
   </dependencies>
 
@@ -90,7 +67,7 @@
               <classpathScope>test</classpathScope>
               <mainClass>org.camunda.bpm.engine.rest.openapi.generator.impl.SchemaValidator</mainClass>
               <arguments>
-                <!-- The following json schema is copy from https://github.com/OAI/OpenAPI-Specification/blob/master/schemas/v3.0/schema.json -->
+                <!-- The following json schema is a copy from https://github.com/OAI/OpenAPI-Specification/blob/master/schemas/v3.0/schema.json -->
                 <!-- Date: 11-Feb-2020 -->
                 <argument>${project.basedir}/src/main/openapi/schema.json</argument>
                 <argument>${generated-directory}/${generated-file}</argument>
