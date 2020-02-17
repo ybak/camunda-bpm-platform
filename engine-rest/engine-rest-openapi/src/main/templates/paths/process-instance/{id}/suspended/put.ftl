@@ -1,5 +1,5 @@
 {
-  "operationId" : "updateSuspensionState",
+  "operationId" : "updateSuspensionStateById",
   "description": "Activates or suspends a given process instance by id.",
   "tags": [
     "Process instance"
@@ -17,6 +17,7 @@
     "content" : {
       "application/json" : {
         "schema" : {
+        "type": "object",
           "properties": {
 
             <@lib.property
