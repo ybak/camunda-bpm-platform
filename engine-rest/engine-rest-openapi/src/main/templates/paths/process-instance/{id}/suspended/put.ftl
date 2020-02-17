@@ -1,5 +1,5 @@
 {
-  "operationId" : "updateSuspensionState",
+  "operationId" : "updateSuspensionStateById",
   "description": "Activates or suspends a given process instance by id.",
   "tags": [
     "Process instance"
