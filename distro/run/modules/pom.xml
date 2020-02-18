@@ -17,6 +17,7 @@
 
   <modules>
     <module>rest</module>
+	<module>webapps</module>
   </modules>
 
   <!-- define provided dependencies that will already be present in the Spring 
@@ -117,17 +118,5 @@
       </plugins>
     </pluginManagement>
   </build>
-  
-  <profiles>
-    <profile>
-      <id>distro-ce</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <modules>
-        <module>webapps</module>
-      </modules>
-    </profile>
-  </profiles>
 
 </project>

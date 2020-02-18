@@ -65,15 +65,7 @@
       <modules>
         <module>modules</module>
         <module>assembly</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>distro-ce</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <modules>
-        <module>distro</module>
+		<module>distro</module>
       </modules>
     </profile>
   </profiles>
