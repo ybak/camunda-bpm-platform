@@ -8,8 +8,9 @@ import org.junit.Test;
 import org.openapitools.client.ApiException;
 import org.openapitools.client.api.ProcessInstanceApi;
 import org.openapitools.client.model.CountResultDto;
-import org.openapitools.client.model.InlineObject;
 import org.openapitools.client.model.ProcessInstanceQueryDto;
+import org.openapitools.client.model.SingleProcessInstanceSuspensionStateDto;
+
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -49,7 +50,7 @@ public class ProcessInstanceTest {
         .willReturn(aResponse().withStatus(204)));
 
     // when
-    InlineObject dto = new InlineObject();
+    SingleProcessInstanceSuspensionStateDto dto = new SingleProcessInstanceSuspensionStateDto();
     dto.setSuspended(true);
     api.updateSuspensionStateById(id, dto);
 
