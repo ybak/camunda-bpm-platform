@@ -48,6 +48,7 @@ public class CamundaBpmRunSecurityConfiguration {
   @Bean
   @ConditionalOnProperty(name = "enabled", havingValue = "true", prefix = CamundaBpmRunCorsProperty.PREFIX)
   public FilterRegistrationBean<Filter> corsFilter() throws ServletException {
+    System.out.println("COOOOOOOOORS");
     FilterRegistrationBean<Filter> registration = new FilterRegistrationBean<>();
     registration.setName("camunda-cors");
     CorsFilter corsFilter = new CorsFilter();
